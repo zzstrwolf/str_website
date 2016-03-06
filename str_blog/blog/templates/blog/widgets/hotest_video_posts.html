@@ -1,0 +1,20 @@
+<div id="vmaig-hotest-posts">
+    <div class="panel panel-vmaig">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                <span class="glyphicon glyphicon-facetime-video"></span>
+                热门视频
+                <span class="glyphicon glyphicon-remove btn panel-close pull-right"></span>
+                <span class="glyphicon glyphicon-chevron-up btn panel-collapse pull-right"  data-toggle="collapse" data-target="#hot_video_list"></span>
+            </h3>
+        </div>
+        <ul id="hot_video_list" class="list-group collapse in">
+            {% for article in hot_video_list %}
+                    <li class="list-group-item">
+                    <span class="hotest-post-title"><a href="/article/{{article.en_title}}.html">{{article.title}}</a> </span>
+                    <!--<span class="badge">{{article.view_times}}</span>-->
+                    </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

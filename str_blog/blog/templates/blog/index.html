@@ -1,0 +1,150 @@
+{% extends "./blog/base.html" %}
+{% block title %}
+<title>秀色驿站 专注丝袜美女,丝袜美腿,美女写真,beautyleg,高跟丝袜视频套图分享 第{{page_obj.number}}页</title>
+{% endblock %}
+{% block keywords %}
+<meta name="keywords" content="丝袜美女,丝袜美腿,高跟丝袜,美女写真,beautyleg,beautyleg视频,beautyleg套图,腿模" />
+{% endblock %}
+{% block description %}
+<meta name="description" content="秀色驿站(xiuseyizhan.com)是一个专注分享beautyleg，美女写真，高跟丝袜，丝袜美女美腿视频套图的专业娱乐站点。完美视听感受，尽在秀色驿站！" />
+{% endblock %}
+{% block bubble %}
+<link rel="stylesheet" type="text/css" href="/static/css/addtohomescreen.css" />
+<script src="/static/js/addtohomescreen.js"></script>
+<script>
+addToHomescreen();
+</script>
+{% endblock %}
+{%block main%}
+<div id="index_row"  class="row" style="max-width:100%">
+    <div id="vmaig-content" class="col-md-7 col-lg-7 col-lg-offset-1 col-md-offset-1 col-sm-8">
+        <!-- 警告框 -->
+        <div class="well alert hidden-xs fade in">
+            <button class="close" data-dismiss="alert" type="button">&times;</button>
+            <!--欢迎来到
+            <a href="/" >秀色驿站</a><br />-->温馨提示：暂不支持IE8及以下，360等双核浏览器建议使用极速模式！
+        </div>
+
+        <div class="visible-xs">
+            <div class="search">
+                <form class="form-inline clearfix" role="form" method="get" action="/search/"> 
+				
+                    <!--<div  class='col-sm-11 col-xs-11 col-md-11 col-lg-11'><input type="text" class="form-control" id="top-s" name="s"></div>-->
+                    <input id='search_text' type="text" class="form-control" id="top-s" name="s" />
+					<!--<div class=' col-sm-1 col-xs-1 col-md-1 col-lg-1'><button class="btn btn-vmaig">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+					</div>-->
+					<button id='search_button' class="btn btn-vmaig">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+				
+                </form>
+            </div>
+        </div>
+        <!-- 首页文章列表 -->
+        <div id="home-post-list">
+            <!-- 首页轮播 -->
+            <div class="hidden-xs">
+            {% if carousel_page_list%}
+            {% include "./blog/include/carousel.html"%}
+            {% endif%}
+            </div>
+
+            <!--首页文章列表 -->
+            {% if article_list %}
+            {% with post_list=article_list %}
+            {% for post in post_list %}
+                {% include "./blog/include/home_post.html" %}
+            {% endfor %}
+            {% endwith %}
+            {% endif %}
+        </div>
+        <!--分页 -->
+        <div class="hidden-md hidden-lg hidden-sm">
+           
+            <!--{% if page_obj %}
+            {% include "./blog/include/pagination_m.html" %}
+            {% endif %}
+            -->
+            <div id="loading" style="height:100px;line-height:100px;text-align:center;display:none;">
+            <img src="http://vmaig.qiniudn.com/loading.gif" alt="">
+            </div>
+            <button id="all-post-more" type="button" class="btn btn-vmaig" value="all" style="width:100%">
+            加载更多
+            <span class="glyphicon glyphicon-menu-down"></span>
+            </button>
+        </div>
+        
+        <div class="hidden-xs">
+        {% if page_obj%}
+        {% include "./blog/include/pagination.html"%}
+        {% endif %}
+        </div>
+        
+    </div>
+
+    <!-- 右边的widgets -->
+    <div id="vmaig-side" class="col-md-3 col-lg-3 hidden-xs col-sm-4">
+        {% include "./blog/widgets/tags_cloud.html"%}
+        {% include "./blog/widgets/search.html"%}
+		{% include "./blog/widgets/qrcode.html"%}
+        {% include "./blog/widgets/hotest_posts.html"%}
+        {% include "./blog/widgets/hotest_video_posts.html"%}
+        {% include "./vmaig_comments/latest_comments.html"%}
+
+        <!--{% include "./blog/widgets/links.html"%}-->
+    </div>
+</div>
+{% endblock %}
+
+
+{% block js%}
+<script language="javascript" type="text/javascript">
+    var start = 0;
+    var end = parseInt({{PAGE_NUM}});
+    $("#all-post-more").click(function(){
+        start = end;
+        end += 5;
+        $("#loading")[0].style.display = "block";
+        $.ajax({
+            type:"POST",
+            url:"/all/",
+            data:{"val":$(this).attr("value"),"start":start,"end":end},
+            beforeSend:function(xhr){
+                xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));  
+            },
+            success:function(data,textStatus){
+                $("#loading")[0].style.display = "none";
+                $("#all-post-more")[0].style.display = "none";
+                $("#home-post-list").append(data["html"]);
+               /* for (var i=start;i<end;i++)
+                {
+                    $(".home-post")[i].style.display = "none";
+                }
+                //文档全部加载完成后显示ajax新增的内容,并且隐藏button和gif
+                $(document).ready(function(){   
+                    $("#loading")[0].style.display = "none";
+                    $("#all-post-more")[0].style.display = "none";
+                    for (var i=start;i<end;i++)
+                    {
+                        $(".home-post")[i].style.display = "block";
+                    }
+                
+                })*/
+                if(data["isend"])
+                {
+                    $("#all-post-more")[0].style.display = "none";
+                }else{
+                    $("#all-post-more")[0].style.display = "block";
+                }
+
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                alert(XMLHttpRequest.responseText);
+            }
+        });
+    });
+
+</script>
+{% endblock%}

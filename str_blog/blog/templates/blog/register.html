@@ -1,0 +1,13 @@
+{% extends "./blog/base.html"%}
+{% block title %}
+<title>秀色驿站 用户注册</title>
+{% endblock %}
+{% block keywords %}
+<meta name="keywords" content="秀色驿站,beautyleg,用户注册" />
+{% endblock %}
+{% block description %}
+<meta name="description" content="各位看官在此免费注册成为秀色驿站的会员，同时可关注公众号【秀色驿站】，第一时间获得更新资讯！" />
+{% endblock %}
+{% block main %}
+    {% include "./vmaig_auth/register.html"%}
+{% endblock%}

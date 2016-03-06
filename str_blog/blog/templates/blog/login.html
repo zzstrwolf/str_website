@@ -1,0 +1,13 @@
+{% extends "./blog/base.html"%}
+{% block title %}
+<title>秀色驿站 用户登录</title>
+{% endblock %}
+{% block keywords %}
+<meta name="keywords" content="秀色驿站,beautyleg,用户登录" />
+{% endblock %}
+{% block description %}
+<meta name="description" content="各位看官在此登录秀色驿站，beautyleg超清视频和图片饱您眼福，登录后评论赞美一下美眉们吧！" />
+{% endblock %}
+{% block main %}
+    {% include "./vmaig_auth/login.html"%}
+{% endblock%}

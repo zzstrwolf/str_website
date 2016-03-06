@@ -1,0 +1,73 @@
+<div id="tags_cloud" class="">
+</div>
+
+<style>
+#tags_cloud {
+    background-color: rgba(0,0,0,0.6);
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+</style>
+
+<script src="/static/lib/d3/d3.js"></script>
+<script src="/static/js/d3.layout.cloud.js"></script>
+<script>
+	function create_cloud()
+	{
+		var fill = d3.scale.category20();
+
+		//在tags数组中存放blog的tags,用于在标签云中显示
+		var tags = ["Vivien","Lena","Mei","Anonymous","Rena","Cherry","Linda","Katarina","Liya","PeiPei","Penny","Suan","Jessie","Chrini","Serena","Cindy","Ashely","Bella","Elaine","Michiyo","Yaya","Aileen","Sunny","Luffy","Linda","Alie","Vevi","Anonymity","Yen","Jellyfish","Evenni","Lilian","Eva","Nana","Lorraine","Emmie","Minna","Wawa","Phebee","Susan","Sabrina","Tiara","Anita","Queena","Chu","Lynn","Joanna","Tina","Aries","Dana","Alice","Jennifer","Olivia","Dennise","Yoyo","Sarah","Stephy","Vanessa","Tammy","Celia","Sammi","内衣","泳衣","Abby","Brindy","Queenie","黑丝","肉丝","凉高","皮高","Zoey","Winnie","Lucy","Dora","Ning","Sara","Vicni","Avy","Jill","Lina","Miya","Jenny","Vina","Candy","Gia","Taphy","LuLu","Flora","Miki","Kaylar","Miso","Xin","Emma","Hannah","Avril","Syuan",];
+
+		var words = tags;
+		
+		//让标签云自适应大小
+		if (document.documentElement.clientWidth >= 768 && document.documentElement.clientWidth <= 1199)
+		{
+			x1 = 200;
+			a1 = 100;
+		}
+		else
+		{
+			x1 = 250;
+			a1 = 125;
+		}
+		  
+		d3.layout.cloud().size([x1,2 * x1])
+			.words(words.map(function(d) {
+				return {text: d, size: 10 + Math.random() * 15};
+			}))
+			.padding(5)
+			.rotate(function() { return ~~(Math.random() * 2) * 90; })
+			.font("Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol'")
+			.fontSize(function(d) { return d.size; })
+			.on("end", draw)
+			.start();
+
+		function draw(words) {
+			d3.select("#tags_cloud").append("svg")
+			  .attr("width", x1)
+			  .attr("height",2 * x1)
+			  .append("g")
+			  .attr("transform", "translate(" + a1 + "," +2 * a1 + ")");
+
+			for (var i=0; i< words.length;++i)
+			{
+				var str = words[i];
+				d3.select("g").append("a").attr("xlink:href","/tag/"+words[i].text)
+					.append("text").text(words[i].text) .style("font-size", words[i].size+"px")
+					.style("font-family", "'Microsoft YaHei','WenQuanYi Micro Hei','tohoma,sans-serif'")
+					.style("fill", fill(i))
+					.attr("text-anchor", "middle")
+					.attr("transform", 
+						"translate(" + [words[i].x, words[i].y] + ")rotate(" + words[i].rotate + ")"
+			  )
+			}
+		}
+	}
+	create_cloud();
+</script>
+
+
+
+

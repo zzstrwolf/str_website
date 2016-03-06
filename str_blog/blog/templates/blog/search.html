@@ -1,0 +1,104 @@
+{% extends "./blog/base.html" %}
+{% block title %}
+<title>秀色驿站 {{s}} 搜索结果 第{{page_obj.number}}页</title>
+{% endblock %}
+{% block keywords %}
+<meta name="keywords" content="{{s}},beautyleg,内衣,美腿,丝袜,高跟,泳衣,比基尼" />
+{% endblock %}
+{% block description %}
+<meta name="description" content="beautyleg高清套图视频在线观看，移动端良好支持，超薄丝袜透肉光滑，细跟高跟闪亮诱人，内衣短裙紧身苗条，曼妙身材跃然于各位看官眼前。当前为您带来的是【{{s}}】的搜索结果！" />
+{% endblock %}
+{% block main%}
+
+<div id="search_row" class="row">
+    <div id="vmaig-content" class="col-md-7 col-lg-7 col-lg-offset-1 col-md-offset-1 col-sm-8">
+        <div class="visible-xs">
+            <div class="search">
+                <form class="form-inline clearfix" role="form" method="get" action="/search/"> 
+                    <input id='search_text' type="text" class="form-control" id="top-s" name="s" />
+					<button id='search_button' class="btn btn-vmaig">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div id="all-post-list">
+
+            {% if article_list %}
+            {% with post_list=article_list %}
+            {% for post in post_list %} 
+                {% include "./blog/include/search_post.html"%}
+            {% endfor %}
+            {% endwith %}
+            {% endif %}
+
+            
+        </div>
+        <!--分页 -->
+        {% if count > PAGE_NUM %}
+        <div class="hidden-md hidden-lg hidden-sm">
+            <div id="loading" style="height:100px;line-height:100px;text-align:center;display:none;">
+                <img src="http://vmaig.qiniudn.com/loading.gif" alt="">
+            </div>
+            <button id="all-post-more" type="button" class="btn btn-vmaig" value="all" style="width:100%">
+                加载更多
+                <span class="glyphicon glyphicon-menu-down"></span>
+            </button>
+        </div>
+        {% endif %}
+        <!--分页 移动设备上用加载更多-->
+        <div class="hidden-xs">
+        {% if page_obj%}
+        {% include "./blog/include/pagination.html"%}
+        {% endif %}
+        </div>
+       
+
+    </div>
+    <div id="vmaig-side" class="col-md-3 col-lg-3 hidden-xs col-sm-4">
+        {% include "./blog/widgets/tags_cloud.html"%}
+        {% include "./blog/widgets/search.html"%}
+        {% include "./blog/widgets/hotest_posts.html"%}
+        {% include "./blog/widgets/hotest_video_posts.html"%}
+        {% include "./vmaig_comments/latest_comments.html"%}
+    </div>
+</div>
+
+{% endblock%}
+
+{% block js%}
+<script language="javascript" type="text/javascript">
+    var start = 0;
+    var end = parseInt({{PAGE_NUM}});
+    $("#all-post-more").click(function(){
+        start = end;
+        end += 5;
+        $("#loading")[0].style.display = "block";
+        $.ajax({
+            type:"POST",
+            url:"/search/?s={{s}}/",
+            data:{"val":"{{s}}","start":start,"end":end},
+            beforeSend:function(xhr){
+                xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));  
+            },
+            success:function(data,textStatus){
+                $("#loading")[0].style.display = "none";
+                $("#all-post-more")[0].style.display = "none";
+                $('#all-post-list').append(data["html"]);
+
+                if(data["isend"])
+                {
+                    $("#all-post-more")[0].style.display = "none";
+                }else{
+                    $("#all-post-more")[0].style.display = "block";
+                }
+
+            },
+            error:function(XMLHttpRequest, textStatus, errorThrown){
+                alert(XMLHttpRequest.responseText);
+            }
+        });
+    });
+
+</script>
+{% endblock%}

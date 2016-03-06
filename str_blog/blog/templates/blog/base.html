@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+    <!--手机html -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" />
+    {% block title %} {% endblock %}
+	{% block keywords %} {% endblock %}
+	{% block description %} {% endblock %}
+	{% block bubble %} {% endblock %}
+	<link rel="apple-touch-icon" href="/static/img/apple-touch-icon-precomposed.png"/>
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    <link rel="bookmark" href="/static/img/favicon.ico">
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/vmaig.css">
+    <link rel="stylesheet" href="/static/css/vmaig_comments.css">
+    <link rel="stylesheet" href="/static/css/vmaig_auth.css">
+    <link rel="stylesheet" href="/static/jquery/jquery.Jcrop.min.css">
+
+    <script src="/static/jquery/jquery-2.1.3.min.js"></script>
+    <script src="/static/jquery/jquery.cookie.js"></script>
+    <script src="/static/jquery/jquery.form.js"></script>
+    <script src="/static/jquery/jquery.Jcrop.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    
+    <!--加载那个全屏插件-->
+    <link rel="stylesheet" href="/static/fullPhoto/css/baguetteBox.min.css">
+    <script src="/static/fullPhoto/js/baguetteBox.js"></script>
+    
+    {% block css%} {% endblock%}
+    <!--baidu statistics-->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?6ebb8fbf73d5eb70b920d8970a76a951";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<body id="vmaig">
+    <!-- 导航栏 -->
+    {% include "./blog/include/nav.html"%}
+    <!-- 文章列表 与 侧边的东西 -->
+    <div id="vmaig-main">
+        <div id="vmaig-content" class="container">
+            {%block main%} {% endblock %}
+        </div>
+        <footer>
+           <div class="container">
+               <p class="text-center"><a href="http://www.xiuseyizhan.com/sitemap.xml">网站地图</a> | Copyright © 2016 xiuseyizhan All Rights Reserved. Powered by 秀色驿站. &nbsp <a href="http://www.miitbeian.gov.cn/" style="color:white">渝ICP备16000730号</a><span style="display:none"><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1257486134'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1257486134' type='text/javascript'%3E%3C/script%3E"));</script></span></p>
+           </div>
+        </footer>
+    </div>
+    <!--图片浏览插件的初始化-->
+    <script>
+        baguetteBox.run('.baguetteBoxOne', {
+        animation: 'fadeIn'
+        });
+    </script>
+	
+    <script>
+		window.onresize = function(){ if (document.documentElement.clientWidth >= 992){
+        $("svg").remove();
+        create_cloud();
+        } };
+	</script>
+    <!--bd auto post-->
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            bp.src = '//push.zhanzhang.baidu.com/push.js';
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+</script>
+</body>
+
+
+<script type="text/javascript" src="/static/js/vmaig.js"></script>
+{% block js%}{% endblock%}
+
+</html>
